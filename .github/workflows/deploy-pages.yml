@@ -1,0 +1,50 @@
+# Build and deploy to GitHub Pages (Settings → Pages → Source: GitHub Actions).
+# Set repository secrets (optional): VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY — if unset, build uses defaults in src/supabase-client.ts.
+# Supabase Dashboard → Auth → URL: Site URL and Redirect URLs must include your Pages URL, e.g. https://YOUR_USER.github.io/SJC-Marketplace/ and .../auth/callback
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - name: Build
+        env:
+          # Project Pages URL is https://USER.github.io/REPO/ — base must be /REPO/
+          # If your site is a user/org page at domain root (repo YOURNAME.github.io), change this to VITE_BASE_PATH: /
+          VITE_BASE_PATH: ${{ format('/{0}/', github.event.repository.name) }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

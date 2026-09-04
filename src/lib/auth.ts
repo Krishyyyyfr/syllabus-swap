@@ -29,11 +29,13 @@ function isAllowedEmail(email: string): boolean {
 
 /** Sign in with Google (redirects to Google; after return, initAuth handles session). */
 export async function signInWithGoogle(): Promise<void> {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const redirectTo = `${window.location.origin}${base}/auth/callback`;
   await supabase.auth.signInWithOAuth({
-    provider: 'google',
+    provider: "google",
     options: {
-      redirectTo: window.location.origin + window.location.pathname,
-      queryParams: { prompt: 'select_account' },
+      redirectTo,
+      queryParams: { prompt: "select_account" },
     },
   });
 }

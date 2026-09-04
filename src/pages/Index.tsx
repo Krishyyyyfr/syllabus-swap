@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Home, ShoppingBag, User, MessageCircle, Github } from 'lucide-react';
+import { Home, ShoppingBag, User, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GITHUB_PROFILE_URL, GITHUB_USERNAME } from '@/lib/github';
 import { fetchListings } from '@/lib/store';
 import { Listing } from '@/lib/types';
 import { initAuth, logout as doLogout, User as UserType } from '@/lib/auth';
@@ -140,20 +139,6 @@ const Index = () => {
             />
           )}
         </main>
-
-        <footer className="relative z-10 shrink-0 border-t border-border/60 bg-background/80 py-2.5 px-4">
-          <p className="max-w-6xl mx-auto flex items-center justify-center gap-2 text-center text-[11px] text-muted-foreground">
-            <Github className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />
-            <a
-              href={GITHUB_PROFILE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors"
-            >
-              @{GITHUB_USERNAME}
-            </a>
-          </p>
-        </footer>
 
         <nav className="sticky bottom-0 bg-card/95 backdrop-blur-md border-t border-border z-40 shadow-[0_-4px_24px_-8px_rgba(30,42,68,0.08)]">
           <div className="max-w-6xl mx-auto flex">
