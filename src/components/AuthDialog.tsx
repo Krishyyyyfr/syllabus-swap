@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { signInWithGoogle, ALLOWED_EMAIL_DOMAIN_DISPLAY } from '@/lib/auth';
 import { useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
 
 interface AuthDialogProps {
   open: boolean;
@@ -18,10 +17,18 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
   useEffect(() => {
     if (!open) return;
     const err = searchParams.get('error');
+    const signedInAs = searchParams.get('as');
     if (err === 'school_email_required') {
-      setError(`Please sign in with your school Google account (${ALLOWED_EMAIL_DOMAIN_DISPLAY} only).`);
+      setError(
+        signedInAs
+          ? `Google signed you in as ${signedInAs}, which is not a school account. In the Google picker, choose your @${ALLOWED_EMAIL_DOMAIN_DISPLAY} account (not Gmail).`
+          : `Please sign in with your school Google account (${ALLOWED_EMAIL_DOMAIN_DISPLAY} only).`
+      );
       setSearchParams({}, { replace: true });
-    } else {
+    } else if (err === 'auth_failed') {
+      setError("Sign-in did not finish. Try again and select your St John's College Google account.");
+      setSearchParams({}, { replace: true });
+    } else if (!err) {
       setError('');
     }
   }, [open, searchParams, setSearchParams]);

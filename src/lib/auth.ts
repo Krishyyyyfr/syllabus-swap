@@ -2,6 +2,7 @@ import { supabase, SUPABASE_URL } from '@/supabase-client';
 
 export const SCHOOL_EMAIL_SUFFIX = '@stjohnscollege.co.za';
 export const ALLOWED_EMAIL_DOMAIN_DISPLAY = 'stjohnscollege.co.za';
+export const SCHOOL_HOSTED_DOMAIN = 'stjohnscollege.co.za';
 
 export interface User {
   id: string;
@@ -10,21 +11,103 @@ export interface User {
   createdAt: string;
 }
 
+/** Minimal user shape from Supabase Auth / Google OAuth. */
+export type AuthUserLike = {
+  id: string;
+  email?: string | null;
+  user_metadata?: Record<string, unknown> | null;
+  identities?: Array<{
+    email?: string | null;
+    identity_data?: Record<string, unknown> | null;
+  }> | null;
+};
+
 const SESSION_KEY = 'sjc-marketplace-session';
 
-function supabaseUserToAppUser(sbUser: { id: string; email?: string; user_metadata?: { full_name?: string; name?: string } }): User {
-  const email = (sbUser.email ?? '').toLowerCase();
-  const name = sbUser.user_metadata?.full_name ?? sbUser.user_metadata?.name ?? email.split('@')[0] ?? 'User';
+function asString(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  return trimmed || null;
+}
+
+function normalizeEmail(value: unknown): string | null {
+  const raw = asString(value);
+  if (!raw || !raw.includes('@')) return null;
+  return raw.replace(/\s+/g, '').toLowerCase();
+}
+
+export function isAllowedSchoolEmail(email: string): boolean {
+  const normalized = normalizeEmail(email);
+  return !!normalized && normalized.endsWith(SCHOOL_EMAIL_SUFFIX);
+}
+
+function hostedDomainsFromUser(sbUser: AuthUserLike): string[] {
+  const domains: string[] = [];
+  const push = (value: unknown) => {
+    const hd = asString(value)?.toLowerCase();
+    if (hd) domains.push(hd);
+  };
+  push(sbUser.user_metadata?.hd);
+  for (const identity of sbUser.identities ?? []) {
+    push(identity.identity_data?.hd);
+  }
+  return [...new Set(domains)];
+}
+
+export function hasSchoolHostedDomain(sbUser: AuthUserLike): boolean {
+  return hostedDomainsFromUser(sbUser).includes(SCHOOL_HOSTED_DOMAIN);
+}
+
+/** Every email Google / Supabase attached to this login. */
+export function collectAuthEmails(sbUser: AuthUserLike): string[] {
+  const emails: string[] = [];
+  const push = (value: unknown) => {
+    const email = normalizeEmail(value);
+    if (email) emails.push(email);
+  };
+  push(sbUser.email);
+  push(sbUser.user_metadata?.email);
+  for (const identity of sbUser.identities ?? []) {
+    push(identity.email);
+    push(identity.identity_data?.email);
+    push(identity.identity_data?.preferred_username);
+  }
+  return [...new Set(emails)];
+}
+
+/**
+ * School email to use for the app session, or null if this Google account is not SJC.
+ * Prefers @stjohnscollege.co.za even when Google's "primary" email is a linked Gmail.
+ */
+export function resolveSchoolEmail(sbUser: AuthUserLike): string | null {
+  const emails = collectAuthEmails(sbUser);
+  const schoolEmail = emails.find(isAllowedSchoolEmail);
+  if (schoolEmail) return schoolEmail;
+  if (hasSchoolHostedDomain(sbUser) && emails[0]) return emails[0];
+  return null;
+}
+
+export function getAttemptedEmail(sbUser: AuthUserLike): string {
+  return collectAuthEmails(sbUser)[0] ?? '';
+}
+
+function displayNameFromUser(sbUser: AuthUserLike, email: string): string {
+  const meta = sbUser.user_metadata ?? {};
+  const name =
+    asString(meta.full_name) ??
+    asString(meta.name) ??
+    email.split('@')[0] ??
+    'User';
+  return name.trim() || 'User';
+}
+
+function supabaseUserToAppUser(sbUser: AuthUserLike, email: string): User {
   return {
     id: sbUser.id,
-    name: name.trim() || 'User',
+    name: displayNameFromUser(sbUser, email),
     email,
     createdAt: new Date().toISOString(),
   };
-}
-
-function isAllowedEmail(email: string): boolean {
-  return email.toLowerCase().endsWith(SCHOOL_EMAIL_SUFFIX.toLowerCase());
 }
 
 /** Sign in with Google via this project's Supabase Auth URL, then return to the app. */
@@ -36,7 +119,10 @@ export async function signInWithGoogle(): Promise<void> {
     options: {
       redirectTo,
       skipBrowserRedirect: true,
-      queryParams: { prompt: "select_account" },
+      queryParams: {
+        prompt: "select_account",
+        hd: SCHOOL_HOSTED_DOMAIN,
+      },
     },
   });
   if (error) throw error;
@@ -64,10 +150,10 @@ function setSession(user: User): void {
 }
 
 /** Used by AuthCallback: set app session from Supabase user if email is allowed; returns User or null. */
-export function setSessionFromSupabaseUser(sbUser: { id: string; email?: string; user_metadata?: { full_name?: string; name?: string } }): User | null {
-  const email = (sbUser.email ?? '').toLowerCase();
-  if (!isAllowedEmail(email)) return null;
-  const user = supabaseUserToAppUser(sbUser);
+export function setSessionFromSupabaseUser(sbUser: AuthUserLike): User | null {
+  const email = resolveSchoolEmail(sbUser);
+  if (!email) return null;
+  const user = supabaseUserToAppUser(sbUser, email);
   setSession(user);
   return user;
 }
@@ -86,14 +172,20 @@ export function initAuth(onUser: (user: User | null, error?: string) => void): (
       onUser(null);
       return;
     }
-    const email = (session.user.email ?? '').toLowerCase();
-    if (!isAllowedEmail(email)) {
+    const email = resolveSchoolEmail(session.user);
+    if (!email) {
+      const attempted = getAttemptedEmail(session.user);
       await supabase.auth.signOut();
       localStorage.removeItem(SESSION_KEY);
-      onUser(null, 'Only St John\'s College school accounts can use this app. Please sign in with your @stjohnscollege.co.za Google account.');
+      onUser(
+        null,
+        attempted
+          ? `Google signed you in as ${attempted}. Only @${ALLOWED_EMAIL_DOMAIN_DISPLAY} school accounts can use this app.`
+          : 'Only St John\'s College school accounts can use this app. Please sign in with your @stjohnscollege.co.za Google account.'
+      );
       return;
     }
-    const user = supabaseUserToAppUser(session.user);
+    const user = supabaseUserToAppUser(session.user, email);
     setSession(user);
     onUser(user);
   };
@@ -106,14 +198,22 @@ export function initAuth(onUser: (user: User | null, error?: string) => void): (
       onUser(null);
       return;
     }
-    const email = (session.user.email ?? '').toLowerCase();
-    if (!isAllowedEmail(email)) {
-      supabase.auth.signOut();
+    const email = resolveSchoolEmail(session.user);
+    if (!email) {
+      const attempted = getAttemptedEmail(session.user);
       localStorage.removeItem(SESSION_KEY);
-      onUser(null, 'Only St John\'s College school accounts can use this app. Please sign in with your @stjohnscollege.co.za Google account.');
+      onUser(
+        null,
+        attempted
+          ? `Google signed you in as ${attempted}. Only @${ALLOWED_EMAIL_DOMAIN_DISPLAY} school accounts can use this app.`
+          : 'Only St John\'s College school accounts can use this app. Please sign in with your @stjohnscollege.co.za Google account.'
+      );
+      window.setTimeout(() => {
+        void supabase.auth.signOut();
+      }, 0);
       return;
     }
-    const user = supabaseUserToAppUser(session.user);
+    const user = supabaseUserToAppUser(session.user, email);
     setSession(user);
     onUser(user);
   });

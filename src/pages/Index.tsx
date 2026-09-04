@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Home, ShoppingBag, User, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { fetchListings } from '@/lib/store';
@@ -35,11 +36,22 @@ const Index = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [messageCount, setMessageCount] = useState(0);
   const [initialConversationId, setInitialConversationId] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const cleanup = initAuth((u) => setUser(u));
+    const cleanup = initAuth((u, err) => {
+      setUser(u);
+      if (err) setShowAuth(true);
+    });
     return cleanup;
   }, []);
+
+  useEffect(() => {
+    const err = searchParams.get('error');
+    if (err === 'school_email_required' || err === 'auth_failed') {
+      setShowAuth(true);
+    }
+  }, [searchParams]);
 
   const refreshMessageCount = useCallback(() => {
     if (!user) return;
