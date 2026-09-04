@@ -1,4 +1,4 @@
-import { supabase } from '@/supabase-client';
+import { supabase, SUPABASE_URL } from '@/supabase-client';
 
 export const SCHOOL_EMAIL_SUFFIX = '@stjohnscollege.co.za';
 export const ALLOWED_EMAIL_DOMAIN_DISPLAY = 'stjohnscollege.co.za';
@@ -27,17 +27,26 @@ function isAllowedEmail(email: string): boolean {
   return email.toLowerCase().endsWith(SCHOOL_EMAIL_SUFFIX.toLowerCase());
 }
 
-/** Sign in with Google (redirects to Google; after return, initAuth handles session). */
+/** Sign in with Google via this project's Supabase Auth URL, then return to the app. */
 export async function signInWithGoogle(): Promise<void> {
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   const redirectTo = `${window.location.origin}${base}/auth/callback`;
-  await supabase.auth.signInWithOAuth({
+  const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
       redirectTo,
+      skipBrowserRedirect: true,
       queryParams: { prompt: "select_account" },
     },
   });
+  if (error) throw error;
+  if (!data.url) throw new Error("Google sign-in did not return an auth URL.");
+
+  const authUrl = new URL(data.url);
+  const supabaseOrigin = new URL(SUPABASE_URL);
+  authUrl.protocol = supabaseOrigin.protocol;
+  authUrl.host = supabaseOrigin.host;
+  window.location.assign(authUrl.toString());
 }
 
 export function logout(): void {
