@@ -161,21 +161,21 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
         {step === 'form' &&
         <>
             <DialogHeader>
-              <DialogTitle className="font-display text-xl">Create Listing</DialogTitle>
+              <DialogTitle className="font-display text-xl pr-8">Create listing</DialogTitle>
               <DialogDescription>
-                List your school items for sale. You can list for free or pay a flat advertising fee (R20–R120 depending on item price) to advertise it. Advertised listings are reviewed within 3 business days before going live.
+                List school items for free, or pay a flat advertising fee (R20 to R120) to feature them. Featured ads are reviewed within 3 business days.
               </DialogDescription>
             </DialogHeader>
 
-            <div className="space-y-4 mt-4">
+            <div className="space-y-4 mt-2">
               <div>
-                <Label htmlFor="title">Item Title</Label>
+                <Label htmlFor="title" className="mb-1.5 inline-block">Item title</Label>
                 <Input id="title" placeholder="e.g. Grade 10 History Textbook" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={100} />
                 {errors.title && <p className="text-destructive text-xs mt-1">{errors.title}</p>}
               </div>
 
               <div>
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description" className="mb-1.5 inline-block">Description</Label>
                 <Textarea id="description" placeholder="Describe the item, condition details, etc." value={description} onChange={(e) => setDescription(e.target.value)} maxLength={500} rows={3} />
                 {errors.description && <p className="text-destructive text-xs mt-1">{errors.description}</p>}
               </div>
@@ -186,7 +186,7 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
                 {errors.photos && <p className="text-destructive text-xs mt-1">{errors.photos}</p>}
                 <div className="mt-2 grid grid-cols-4 gap-2">
                   {imageUrls.map((url, i) =>
-                <div key={i} className="relative aspect-square rounded-lg overflow-hidden border border-border group">
+                <div key={i} className="relative aspect-square rounded-xl overflow-hidden border border-border group">
                       <img src={url} alt={`Upload ${i + 1}`} className="w-full h-full object-cover" />
                       <button
                     type="button"
@@ -198,7 +198,7 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
                     </div>
                 )}
                   {imageUrls.length < MAX_IMAGES &&
-                <label className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-muted/50 transition-colors">
+                <label className="aspect-square rounded-xl border-2 border-dashed border-muted-foreground/25 flex flex-col items-center justify-center cursor-pointer hover:border-secondary/60 hover:bg-muted/50 transition-colors bg-muted/20">
                       <ImagePlus className="w-5 h-5 text-muted-foreground" />
                       <span className="text-[10px] text-muted-foreground mt-1">
                         {uploading ? 'Loading...' : 'Add'}
@@ -218,12 +218,12 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label htmlFor="price">Price (ZAR)</Label>
+                  <Label htmlFor="price" className="mb-1.5 inline-block">Price (ZAR)</Label>
                   <Input id="price" type="number" placeholder="0.00" value={price} onChange={(e) => setPrice(e.target.value)} min={0} max={50000} />
                   {errors.price && <p className="text-destructive text-xs mt-1">{errors.price}</p>}
                 </div>
                 <div>
-                  <Label>Category</Label>
+                  <Label className="mb-1.5 inline-block">Category</Label>
                   <Select value={category} onValueChange={(v) => setCategory(v as Category)}>
                     <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
                     <SelectContent>
@@ -237,7 +237,7 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
               </div>
 
               <div>
-                <Label>Condition</Label>
+                <Label className="mb-1.5 inline-block">Condition</Label>
                 <Select value={condition} onValueChange={(v) => setCondition(v as Condition)}>
                   <SelectTrigger><SelectValue placeholder="Select condition" /></SelectTrigger>
                   <SelectContent>
@@ -248,44 +248,27 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
                 </Select>
                 {errors.condition && <p className="text-destructive text-xs mt-1">{errors.condition}</p>}
               </div>
-
-              
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               {priceNum > 0 &&
-            <div className="bg-muted rounded-lg p-4 space-y-2">
+            <div className="bg-muted/80 rounded-2xl p-4 space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Item Price</span>
-                    <span className="font-medium">R{priceNum.toFixed(2)}</span>
+                    <span className="text-muted-foreground">Item price</span>
+                    <span className="font-semibold">R{priceNum.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Advertising Fee</span>
-                    <span className="font-medium text-secondary">R{advertisingFee.toFixed(2)}</span>
+                    <span className="text-muted-foreground">Featured listing fee</span>
+                    <span className="font-semibold text-secondary">R{advertisingFee.toFixed(2)}</span>
                   </div>
                 </div>
             }
 
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Button onClick={handleListFree} variant="outline" className="flex-1" size="lg" disabled={saving}>
                   <Upload className="w-4 h-4 mr-2" />
-                  {saving ? 'Saving…' : 'List for Free'}
+                  {saving ? 'Saving…' : 'List for free'}
                 </Button>
                 <Button onClick={handleAdvertise} className="flex-1 bg-gradient-gold text-gold-foreground font-semibold hover:opacity-90" size="lg" disabled={saving}>
                   <CreditCard className="w-4 h-4 mr-2" />
-                  Advertise — R{advertisingFee.toFixed(2)}
+                  Feature R{advertisingFee.toFixed(2)}
                 </Button>
               </div>
             </div>
@@ -301,9 +284,9 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
               </DialogDescription>
             </DialogHeader>
 
-            <div className="rounded-xl border border-border bg-card p-4 space-y-4">
+            <div className="rounded-2xl border border-border bg-muted/30 p-4 space-y-4">
               <div>
-                <h4 className="font-semibold text-sm text-foreground mb-1">Pay by QR code</h4>
+                <h4 className="font-bold text-sm text-foreground mb-1">Pay by QR code</h4>
                 <p className="text-xs text-muted-foreground mb-3">
                   Amount due: <span className="font-semibold text-foreground">R{advertisingFee.toFixed(2)}</span>
                   {' '}(flat fee by item price tier)
@@ -321,7 +304,7 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
               </div>
 
               <div className="bg-muted/50 rounded-lg p-3 text-left space-y-2">
-                <h4 className="font-semibold text-sm">{title}</h4>
+                <h4 className="font-bold text-sm">{title}</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge className={cn('text-xs', category && CATEGORY_TAG_CLASSNAMES[category as Category])}>
                     {category && CATEGORY_LABELS[category as Category]}
@@ -352,7 +335,7 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
               <CheckCircle className="w-8 h-8 text-success" />
             </div>
             <div>
-              <h3 className="text-xl font-display font-bold">Listed Successfully!</h3>
+              <h3 className="text-xl font-display font-bold">Listed successfully</h3>
               <p className="text-muted-foreground text-sm mt-2">
                 {justCreatedAdvertised
                   ? 'Your ad will be reviewed within 3 business days. You\'ll see it on the marketplace once approved.'
@@ -360,7 +343,7 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
               </p>
             </div>
             <Button onClick={handleClose} className="bg-gradient-navy text-navy-foreground hover:opacity-90">
-              View Marketplace
+              Back to marketplace
             </Button>
           </div>
         }

@@ -128,9 +128,9 @@ export default function AuthCallback() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <p className="text-muted-foreground">
-        {status === 'loading' ? 'Signing you in…' : status === 'ok' ? 'Redirecting…' : 'Redirecting…'}
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <p className="text-muted-foreground text-sm font-medium">
+        {status === 'loading' ? 'Signing you in…' : 'Redirecting…'}
       </p>
     </div>
   );

@@ -19,7 +19,7 @@ export function VerifiedBadge({ className, variant = 'default' }: VerifiedBadgeP
       )}
     >
       <BadgeCheck className="w-3 h-3 shrink-0" aria-hidden />
-      Verified St John&apos;s student
+      Verified student
     </span>
   );
 }

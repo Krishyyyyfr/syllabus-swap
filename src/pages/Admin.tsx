@@ -108,19 +108,19 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-50 border-b border-border/70 bg-white/75 backdrop-blur-xl">
+        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link to="/" className="p-1.5 hover:bg-muted rounded-md transition-colors">
+            <Link to="/" className="p-1.5 hover:bg-muted rounded-full transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <Shield className="w-6 h-6 text-primary" />
-            <h1 className="font-display text-xl font-bold">Admin Panel</h1>
+            <Shield className="w-5 h-5 text-primary" />
+            <h1 className="font-display text-xl font-extrabold">Admin</h1>
           </div>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-6 space-y-10">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-10 animate-fade-up">
         {/* Pending ads */}
         <section>
           <h2 className="font-display text-lg font-bold mb-3">Pending ad approvals</h2>
@@ -130,11 +130,11 @@ export default function Admin() {
           {loadingPending ? (
             <p className="text-sm text-muted-foreground">Loading…</p>
           ) : pending.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-6 bg-muted/30 rounded-lg text-center">No pending ads.</p>
+            <p className="text-sm text-muted-foreground py-8 bg-card rounded-2xl border border-dashed border-border text-center">No pending ads.</p>
           ) : (
             <ul className="space-y-3">
               {pending.map((listing) => (
-                <li key={listing.id} className="p-4 rounded-xl border border-border bg-card flex flex-wrap items-center justify-between gap-3">
+                <li key={listing.id} className="p-4 rounded-2xl border border-border bg-card flex flex-wrap items-center justify-between gap-3 shadow-card">
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold text-foreground truncate">{listing.title}</p>
                     <p className="text-sm text-muted-foreground line-clamp-1">{listing.description}</p>
@@ -172,7 +172,7 @@ export default function Admin() {
           )}
         </section>
 
-        {/* All listings – remove any */}
+        {/* All listings: remove any */}
         <section>
           <h2 className="font-display text-lg font-bold mb-3">All listings</h2>
           <p className="text-sm text-muted-foreground mb-4">
@@ -181,11 +181,11 @@ export default function Admin() {
           {loadingAll ? (
             <p className="text-sm text-muted-foreground">Loading…</p>
           ) : allListings.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-6 bg-muted/30 rounded-lg text-center">No listings.</p>
+            <p className="text-sm text-muted-foreground py-8 bg-card rounded-2xl border border-dashed border-border text-center">No listings.</p>
           ) : (
             <ul className="space-y-2">
               {allListings.map((listing) => (
-                <li key={listing.id} className="p-3 rounded-lg border border-border bg-card flex flex-wrap items-center justify-between gap-2">
+                <li key={listing.id} className="p-3 rounded-2xl border border-border bg-card flex flex-wrap items-center justify-between gap-2 shadow-sm">
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-sm text-foreground truncate">{listing.title}</p>
                     <p className="text-xs text-muted-foreground">

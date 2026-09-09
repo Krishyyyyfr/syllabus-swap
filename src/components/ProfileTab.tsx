@@ -28,22 +28,19 @@ export default function ProfileTab({ user, listings, onSelectListing, onLogout, 
   const initials = initialsFromName(user.name);
 
   return (
-    <div className="space-y-8">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-navy p-6 sm:p-8 text-navy-foreground shadow-lg ring-1 ring-white/10">
-        <div
-          className="pointer-events-none absolute -right-8 top-1/2 h-56 w-56 -translate-y-1/2 opacity-[0.07] crest-watermark"
-          aria-hidden
-        />
+    <div className="space-y-8 animate-fade-up">
+      <div className="relative overflow-hidden rounded-3xl bg-hero-edumart p-6 sm:p-8 text-white shadow-card">
+        <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-secondary/30 blur-2xl" aria-hidden />
         <div className="relative z-[1] flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
             <div
-              className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-white/45 bg-white/10 text-lg font-bold tracking-tight shadow-lg ring-2 ring-white/15"
+              className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white text-lg font-extrabold tracking-tight shadow-sm text-navy"
               aria-hidden
             >
               {initials}
             </div>
             <div className="min-w-0 space-y-2">
-              <h2 className="font-body text-xl font-bold tracking-tight">{user.name}</h2>
+              <h2 className="font-body text-xl font-extrabold tracking-tight">{user.name}</h2>
               <VerifiedBadge variant="onDark" />
               <p className="text-white/75 text-sm flex items-center gap-2 mt-1">
                 <Mail className="w-3.5 h-3.5 shrink-0 opacity-80" /> {user.email}
@@ -55,11 +52,11 @@ export default function ProfileTab({ user, listings, onSelectListing, onLogout, 
               variant="ghost"
               size="sm"
               onClick={onOpenMessages}
-              className="text-white/85 hover:text-white hover:bg-white/12 rounded-full"
+              className="text-white hover:bg-white/15 hover:text-white rounded-full"
             >
               <MessageCircle className="w-4 h-4 mr-1" /> Messages
               {messageCount > 0 && (
-                <span className="ml-1.5 bg-maroon text-maroon-foreground text-[10px] rounded-full px-1.5 py-0.5 font-semibold">
+                <span className="ml-1.5 bg-white text-navy text-[10px] rounded-full px-1.5 py-0.5 font-semibold">
                   {messageCount}
                 </span>
               )}
@@ -68,22 +65,22 @@ export default function ProfileTab({ user, listings, onSelectListing, onLogout, 
               variant="ghost"
               size="sm"
               onClick={onLogout}
-              className="text-white/85 hover:text-white hover:bg-white/12 rounded-full"
+              className="text-white hover:bg-white/15 hover:text-white rounded-full"
             >
-              <LogOut className="w-4 h-4 mr-1" /> Sign Out
+              <LogOut className="w-4 h-4 mr-1" /> Sign out
             </Button>
           </div>
         </div>
 
         <div className="relative z-[1] mt-8 grid grid-cols-2 gap-3 sm:max-w-md">
-          <div className="rounded-xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/65">Active listings</p>
-            <p className="mt-1 font-body text-2xl font-bold tabular-nums tracking-tight">{myListings.length}</p>
+          <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70">Active listings</p>
+            <p className="mt-1 font-body text-2xl font-extrabold tabular-nums tracking-tight">{myListings.length}</p>
           </div>
-          <div className="rounded-xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/65">Listings sold</p>
-            <p className="mt-1 font-body text-2xl font-bold tabular-nums tracking-tight">—</p>
-            <p className="text-[10px] text-white/50 mt-1 leading-snug">Shown when you mark items sold in Messages</p>
+          <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70">Listings sold</p>
+            <p className="mt-1 font-body text-2xl font-extrabold tabular-nums tracking-tight">-</p>
+            <p className="text-[10px] text-white/55 mt-1 leading-snug">Shown when you mark items sold in Messages</p>
           </div>
         </div>
       </div>
@@ -101,10 +98,10 @@ export default function ProfileTab({ user, listings, onSelectListing, onLogout, 
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-muted/40 rounded-2xl border border-border/60">
+          <div className="text-center py-12 bg-card/70 rounded-2xl border border-dashed border-border">
             <Package className="w-10 h-10 text-muted-foreground/40 mx-auto mb-2" />
-            <p className="text-muted-foreground text-sm">You haven&apos;t listed any items yet.</p>
-            <p className="text-muted-foreground/70 text-xs mt-1">Tap &quot;Sell Item&quot; to get started.</p>
+            <p className="text-foreground text-sm font-semibold">You haven&apos;t listed any items yet.</p>
+            <p className="text-muted-foreground text-xs mt-1">Tap &quot;Sell item&quot; to get started.</p>
           </div>
         )}
       </section>

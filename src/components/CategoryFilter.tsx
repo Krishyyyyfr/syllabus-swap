@@ -32,7 +32,7 @@ export default function CategoryFilter({ selected, onChange }: CategoryFilterPro
   const categories: (Category | 'all')[] = ['all', 'books', 'stationery', 'kit', 'uniform', 'electronics', 'notes', 'other'];
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-1 px-1">
+    <div className="flex gap-2 overflow-x-auto py-2 scrollbar-hide -mx-1 px-1">
       {categories.map((cat) => {
         const Icon = CATEGORY_ICONS[cat];
         const isOn = selected === cat;
@@ -45,8 +45,8 @@ export default function CategoryFilter({ selected, onChange }: CategoryFilterPro
               'shrink-0 inline-flex items-center gap-2 pl-3 pr-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ease-out',
               'border border-transparent',
               isOn
-                ? 'bg-primary text-primary-foreground shadow-md scale-[1.02]'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground border-border/60'
+                ? 'bg-primary text-primary-foreground shadow-md'
+                : 'bg-white text-muted-foreground hover:bg-muted hover:text-foreground border-border/80 shadow-sm'
             )}
           >
             <Icon className={cn('w-4 h-4 shrink-0 transition-transform duration-200', isOn && 'scale-105')} aria-hidden />

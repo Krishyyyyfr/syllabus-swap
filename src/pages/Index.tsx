@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Home, ShoppingBag, User, MessageCircle } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { Home, ShoppingBag, User, MessageCircle, Mail } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { fetchListings } from '@/lib/store';
-import { Listing } from '@/lib/types';
+import { Category, Listing } from '@/lib/types';
 import { initAuth, logout as doLogout, User as UserType } from '@/lib/auth';
 import { isAdminUser } from '@/lib/admin';
 import { startConversation, getUnreadMessageCount } from '@/lib/messages';
@@ -22,13 +22,20 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab>('home');
   const [searchQuery, setSearchQuery] = useState('');
   const [listings, setListings] = useState<Listing[]>([]);
+  const [listingsLoading, setListingsLoading] = useState(true);
+  const [category, setCategory] = useState<Category | 'all'>('all');
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    fetchListings().then((data) => {
-      if (!cancelled) setListings(data);
-    }).catch(() => { /* ignore */ });
+    fetchListings()
+      .then((data) => {
+        if (!cancelled) setListings(data);
+      })
+      .catch(() => { /* ignore */ })
+      .finally(() => {
+        if (!cancelled) setListingsLoading(false);
+      });
     return () => { cancelled = true; };
   }, []);
   const [showCreateListing, setShowCreateListing] = useState(false);
@@ -72,7 +79,21 @@ const Index = () => {
       return;
     }
     if (tab !== 'messages') setInitialConversationId(null);
+    if (tab === 'marketplace') setCategory('all');
     setActiveTab(tab);
+  };
+
+  const goToMarketplace = (cat: Category | 'all' = 'all') => {
+    setInitialConversationId(null);
+    setCategory(cat);
+    setActiveTab('marketplace');
+  };
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    if (query.trim() && activeTab === 'home') {
+      setActiveTab('marketplace');
+    }
   };
 
   const handleCreateListing = () => {
@@ -113,24 +134,33 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col relative">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden z-0" aria-hidden>
-        <div className="absolute left-1/2 bottom-32 h-96 w-96 -translate-x-1/2 opacity-[0.02] crest-watermark" />
-      </div>
-
       <div className="relative z-10 flex flex-col flex-1 min-h-screen">
         <MarketplaceHeader
           searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          onSearchChange={handleSearchChange}
           onCreateListing={handleCreateListing}
           showAdminLink={isAdminUser(user)}
         />
 
-        <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
+        <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6 pb-8">
           {activeTab === 'home' && (
-            <HomeTab listings={listings} onSelectListing={setSelectedListing} />
+            <HomeTab
+              listings={listings}
+              loading={listingsLoading}
+              onSelectListing={setSelectedListing}
+              onBrowseMarketplace={goToMarketplace}
+              onCreateListing={handleCreateListing}
+            />
           )}
           {activeTab === 'marketplace' && (
-            <MarketplaceTab listings={listings} searchQuery={searchQuery} onSelectListing={setSelectedListing} />
+            <MarketplaceTab
+              listings={listings}
+              searchQuery={searchQuery}
+              onSelectListing={setSelectedListing}
+              category={category}
+              onCategoryChange={setCategory}
+              loading={listingsLoading}
+            />
           )}
           {activeTab === 'messages' && user && (
             <MessagesTab
@@ -152,45 +182,55 @@ const Index = () => {
           )}
         </main>
 
-        <nav className="sticky bottom-0 bg-card/95 backdrop-blur-md border-t border-border z-40 shadow-[0_-4px_24px_-8px_rgba(30,42,68,0.08)]">
-          <div className="max-w-6xl mx-auto flex">
+        <nav className="sticky bottom-0 z-40 border-t border-border/80 bg-white/80 backdrop-blur-xl shadow-[0_-8px_30px_-12px_rgba(30,42,68,0.12)] pb-[env(safe-area-inset-bottom)]">
+          <div className="max-w-6xl mx-auto flex px-1">
             {[
-              { id: 'home' as Tab, label: 'Home', icon: Home },
-              { id: 'marketplace' as Tab, label: 'Marketplace', icon: ShoppingBag },
-              { id: 'messages' as Tab, label: 'Messages', icon: MessageCircle, count: user ? messageCount : 0 },
-              { id: 'profile' as Tab, label: user ? 'Profile' : 'Sign In', icon: User },
-            ].map(({ id, label, icon: Icon, count }) => {
-              const active = activeTab === id;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => handleTabClick(id)}
-                  className={cn(
-                    'flex-1 flex flex-col items-center gap-1 py-3 transition-colors duration-200 relative',
-                    active ? 'text-maroon' : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  {active && (
-                    <span
-                      className="absolute top-0 left-1/2 -translate-x-1/2 h-[3px] w-11 rounded-b-full bg-maroon transition-all duration-300"
-                      aria-hidden
-                    />
-                  )}
+              { id: 'home' as const, label: 'Home', icon: Home },
+              { id: 'marketplace' as const, label: 'Market', icon: ShoppingBag },
+              { id: 'messages' as const, label: 'Messages', icon: MessageCircle, count: user ? messageCount : 0 },
+              { id: 'contact' as const, label: 'Contact', icon: Mail, href: '/contact' },
+              { id: 'profile' as const, label: user ? 'Profile' : 'Sign in', icon: User },
+            ].map(({ id, label, icon: Icon, count, href }) => {
+              const active = !href && activeTab === id;
+              const className = cn(
+                'flex-1 flex flex-col items-center gap-0.5 py-2 mx-0.5 my-1.5 rounded-2xl transition-all duration-200',
+                active
+                  ? 'text-primary bg-primary/10'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/70'
+              );
+              const content = (
+                <>
                   <span className="relative inline-flex">
                     <Icon
                       className={cn(
                         'w-5 h-5 transition-transform duration-300 ease-out',
-                        active && 'scale-110 drop-shadow-sm'
+                        active && 'scale-110'
                       )}
                     />
                     {typeof count === 'number' && count > 0 && (
-                      <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] rounded-full bg-maroon text-maroon-foreground text-[10px] font-semibold flex items-center justify-center px-1 shadow-sm">
+                      <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] rounded-full bg-secondary text-secondary-foreground text-[10px] font-semibold flex items-center justify-center px-1 shadow-sm">
                         {count > 99 ? '99+' : count}
                       </span>
                     )}
                   </span>
-                  <span className={cn('text-xs font-medium', active && 'text-maroon')}>{label}</span>
+                  <span className={cn('text-[11px] font-semibold', active && 'text-primary')}>{label}</span>
+                </>
+              );
+              if (href) {
+                return (
+                  <Link key={id} to={href} className={className}>
+                    {content}
+                  </Link>
+                );
+              }
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => handleTabClick(id as Tab)}
+                  className={className}
+                >
+                  {content}
                 </button>
               );
             })}

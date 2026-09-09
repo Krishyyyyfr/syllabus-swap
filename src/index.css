@@ -1,51 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* St John’s College marketplace — navy, maroon, royal blue, uniform grey ([stjohnscollege.co.za](https://www.stjohnscollege.co.za)) */
+/* Edumart: sky blue + navy */
 @layer base {
   :root {
-    --background: 220 33% 97%;
-    --foreground: 220 39% 19%;
+    --background: 199 100% 97%;
+    --foreground: 214 54% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 39% 19%;
+    --card-foreground: 214 54% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 39% 19%;
+    --popover-foreground: 214 54% 18%;
 
-    /* Deep navy #1E2A44 — blazer */
-    --primary: 220 39% 19%;
+    --primary: 214 54% 20%;
     --primary-foreground: 0 0% 100%;
 
-    /* Royal blue #2F5D9F */
-    --secondary: 216 54% 40%;
+    --secondary: 199 75% 56%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Maroon #800020 — tie / sports */
-    --accent: 343 100% 25%;
+    --accent: 199 75% 56%;
     --accent-foreground: 0 0% 100%;
 
-    --muted: 220 22% 94%;
-    --muted-foreground: 211 13% 54%;
+    --muted: 199 70% 94%;
+    --muted-foreground: 214 18% 40%;
 
     --destructive: 0 72% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 18% 90%;
-    --input: 220 18% 90%;
-    --ring: 216 54% 45%;
+    --border: 199 36% 86%;
+    --input: 199 36% 86%;
+    --ring: 199 75% 56%;
 
     --radius: 1.125rem;
 
-    --gold: 343 100% 25%;
+    --gold: 199 75% 48%;
     --gold-foreground: 0 0% 100%;
-    --navy: 220 39% 19%;
-    --navy-light: 216 54% 40%;
+    --navy: 214 54% 20%;
+    --navy-light: 199 75% 56%;
     --navy-foreground: 0 0% 100%;
-    --maroon: 343 100% 25%;
+    --maroon: 199 75% 48%;
     --maroon-foreground: 0 0% 100%;
 
     --success: 145 63% 42%;
@@ -53,19 +50,17 @@
     --warning: 37 90% 51%;
     --warning-foreground: 220 39% 15%;
 
-    --sidebar-background: 220 33% 98%;
-    --sidebar-foreground: 220 39% 19%;
-    --sidebar-primary: 220 39% 19%;
+    --sidebar-background: 199 100% 97%;
+    --sidebar-foreground: 214 54% 20%;
+    --sidebar-primary: 214 54% 20%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 220 25% 94%;
-    --sidebar-accent-foreground: 220 39% 19%;
-    --sidebar-border: 220 18% 90%;
-    --sidebar-ring: 216 54% 45%;
+    --sidebar-accent: 199 70% 94%;
+    --sidebar-accent-foreground: 214 54% 20%;
+    --sidebar-border: 199 40% 88%;
+    --sidebar-ring: 199 75% 56%;
 
-    --font-display: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
-
-    --crest-watermark: url('/lovable-uploads/183793d1-b257-467b-abe4-7fe0fbe50a54.jpg');
+    --font-display: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
   }
 
   .dark {
@@ -104,60 +99,113 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
+    background-image:
+      radial-gradient(ellipse 90% 55% at 50% -15%, hsl(199 95% 90% / 0.9), transparent 60%),
+      radial-gradient(ellipse 45% 35% at 100% 0%, hsl(199 80% 88% / 0.45), transparent 55%),
+      radial-gradient(ellipse 35% 30% at 0% 30%, hsl(214 50% 92% / 0.4), transparent 50%);
+    background-attachment: fixed;
   }
 
   h1,
   h2,
   h3,
-  h4 {
-    font-family: var(--font-body);
-    @apply font-semibold tracking-tight;
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight;
   }
 }
 
 @layer utilities {
   .text-gradient-brand {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(216 54% 42%), hsl(220 39% 28%));
+    background-image: linear-gradient(135deg, hsl(199 75% 52%), hsl(214 54% 28%));
   }
 
-  /* Profile / hero: navy → royal blue */
   .bg-gradient-navy {
-    background: linear-gradient(135deg, #1e2a44 0%, #2f5d9f 100%);
+    background: linear-gradient(135deg, #1e4a7a 0%, #4ba8e8 100%);
   }
 
-  /* Legacy name — CTA sell gradient maroon → red */
   .bg-gradient-gold {
-    background: linear-gradient(135deg, #800020 0%, #c0392b 100%);
+    background: linear-gradient(135deg, #4ba8e8 0%, #1e4a7a 100%);
   }
 
   .bg-gradient-sell-cta {
-    background: linear-gradient(135deg, #800020 0%, #c0392b 100%);
+    background: linear-gradient(135deg, #4ba8e8 0%, #1e4a7a 100%);
+  }
+
+  .bg-surface-light {
+    background: linear-gradient(180deg, #f4fbff 0%, #e7f4fc 100%);
+  }
+
+  .bg-hero-edumart {
+    background:
+      radial-gradient(ellipse 70% 80% at 90% 10%, rgba(75, 168, 232, 0.55), transparent 55%),
+      radial-gradient(ellipse 50% 60% at 0% 100%, rgba(30, 74, 122, 0.45), transparent 50%),
+      linear-gradient(135deg, #163a62 0%, #1e4a7a 42%, #2d7ab8 100%);
+  }
+
+  .hero-cursor-glow {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 28rem;
+    height: 28rem;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(30, 74, 122, 0.42) 0%, rgba(30, 74, 122, 0.16) 38%, transparent 70%);
+    transform: translate(18%, 20%) translate(-50%, -50%);
+    will-change: transform;
   }
 
   .shadow-card {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    box-shadow:
+      0 1px 2px rgba(30, 74, 122, 0.04),
+      0 8px 24px rgba(30, 74, 122, 0.06);
   }
 
   .shadow-card-hover {
     box-shadow:
-      0 16px 40px rgba(0, 0, 0, 0.1),
+      0 16px 40px rgba(30, 74, 122, 0.12),
       0 4px 12px rgba(30, 42, 68, 0.06);
   }
 
   .shadow-search-focus {
     box-shadow:
-      0 0 0 3px rgba(47, 93, 159, 0.18),
-      0 4px 20px rgba(30, 42, 68, 0.08);
+      0 0 0 3px rgba(75, 168, 232, 0.22),
+      0 4px 20px rgba(30, 74, 122, 0.08);
   }
 
-  .crest-watermark {
-    background-image: var(--crest-watermark);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.45s ease-out both;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

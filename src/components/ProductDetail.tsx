@@ -34,17 +34,17 @@ export default function ProductDetail({ listing, open, onClose, onMessageSeller,
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) { setImgIndex(0); onClose(); } }}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto p-0 gap-0">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto p-0 gap-0" showClose={false}>
         <div className="relative">
           {images.length > 0 ? (
             <img
               src={images[safeIndex]}
               alt={listing.title}
-              className="w-full aspect-[4/3] object-cover"
+              className="w-full aspect-[4/3] object-cover rounded-t-2xl"
             />
           ) : (
             <div
-              className="w-full aspect-[4/3] bg-muted flex flex-col items-center justify-center gap-2 text-muted-foreground"
+              className="w-full aspect-[4/3] bg-muted flex flex-col items-center justify-center gap-2 text-muted-foreground rounded-t-2xl"
               role="img"
               aria-label="No photo for this listing"
             >
@@ -54,7 +54,7 @@ export default function ProductDetail({ listing, open, onClose, onMessageSeller,
           )}
           <button
             onClick={() => { setImgIndex(0); onClose(); }}
-            className="absolute top-3 left-3 bg-card/80 backdrop-blur-sm rounded-full p-2 hover:bg-card transition-colors"
+            className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-full p-2 hover:bg-white transition-colors shadow-sm"
           >
             <ArrowLeft className="w-4 h-4 text-card-foreground" />
           </button>
@@ -63,8 +63,8 @@ export default function ProductDetail({ listing, open, onClose, onMessageSeller,
               {CATEGORY_LABELS[listing.category]}
             </Badge>
             {listing.advertised && (
-              <Badge className="bg-maroon text-maroon-foreground hover:bg-maroon font-semibold text-[10px] px-1.5 py-0 h-5 border-0 shadow-sm">
-                AD
+              <Badge className="bg-secondary text-secondary-foreground hover:bg-secondary font-semibold text-[10px] px-1.5 py-0 h-5 border-0 shadow-sm">
+                Featured
               </Badge>
             )}
           </div>
@@ -99,8 +99,8 @@ export default function ProductDetail({ listing, open, onClose, onMessageSeller,
         <div className="p-6 space-y-5">
           <DialogHeader className="text-left space-y-2">
             <DialogTitle className="text-xl font-body font-bold tracking-tight">{listing.title}</DialogTitle>
-            <p className="text-2xl font-bold text-primary font-body">
-              R{listing.price.toFixed(2)}
+            <p className="text-2xl font-extrabold text-primary font-body tracking-tight">
+              R{listing.price.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </DialogHeader>
 
@@ -114,13 +114,13 @@ export default function ProductDetail({ listing, open, onClose, onMessageSeller,
 
           <p className="text-muted-foreground text-sm leading-relaxed">{listing.description}</p>
 
-          <div className="border-t border-border pt-4 space-y-2">
+          <div className="border-t border-border pt-4 space-y-3">
             {isOwner ? (
               <>
                 <p className="text-sm text-muted-foreground">This is your listing.</p>
                 <Button
                   variant="destructive"
-                  className="w-full"
+                  className="w-full rounded-full"
                   disabled={removing}
                   onClick={async () => {
                     if (!listing) return;
@@ -143,18 +143,18 @@ export default function ProductDetail({ listing, open, onClose, onMessageSeller,
               </>
             ) : (
               <>
-                <div className="space-y-2 mb-3">
-                  <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                <div className="rounded-2xl border border-border bg-muted/40 p-4 space-y-2">
+                  <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
                     <User className="w-4 h-4 text-primary" />
                     Seller
                   </h4>
-                  <p className="text-sm font-medium text-foreground">{listing.sellerName}</p>
+                  <p className="text-sm font-semibold text-foreground">{listing.sellerName}</p>
                   <VerifiedBadge />
                 </div>
                 <Button
                   variant="secondary"
                   onClick={() => onMessageSeller?.(listing)}
-                  className="w-full mt-1 shadow-sm"
+                  className="w-full mt-1 shadow-sm h-11 rounded-full font-semibold"
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Message seller

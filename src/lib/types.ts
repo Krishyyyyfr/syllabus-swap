@@ -27,15 +27,15 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   other: 'Other',
 };
 
-/** Category chips — solid fills (no transparency) in St John’s palette. */
+/** Category chips: solid fills in the Edumart light-blue palette. */
 export const CATEGORY_TAG_CLASSNAMES: Record<Category, string> = {
-  books: 'bg-[#E8EBF2] text-primary border-0 shadow-sm',
-  stationery: 'bg-[#E4EDF7] text-secondary border-0 shadow-sm',
-  kit: 'bg-[#F2E6EB] text-maroon border-0 shadow-sm',
-  uniform: 'bg-[#ECEEF2] text-foreground border border-[#D8DEE6] shadow-sm',
-  electronics: 'bg-[#E0ECF8] text-secondary border-0 shadow-sm',
+  books: 'bg-[#E7F4FC] text-primary border-0 shadow-sm',
+  stationery: 'bg-[#DFF1FB] text-secondary border-0 shadow-sm',
+  kit: 'bg-[#EAF7FF] text-primary border-0 shadow-sm',
+  uniform: 'bg-[#F3FAFE] text-foreground border border-[#D4EAF6] shadow-sm',
+  electronics: 'bg-[#D6EEFA] text-secondary border-0 shadow-sm',
   notes: 'bg-white text-foreground border border-border shadow-sm',
-  other: 'bg-[#E8EAED] text-muted-foreground border-0 shadow-sm',
+  other: 'bg-[#EAF4FA] text-muted-foreground border-0 shadow-sm',
 };
 
 export const CONDITION_LABELS: Record<Condition, string> = {
@@ -51,7 +51,7 @@ export function calculateListingFee(price: number): number {
   return Math.max(Math.round(price * LISTING_FEE_PERCENTAGE * 100) / 100, 1);
 }
 
-/** Tiered advertising fee by item price: 0–300 → R20, 300–500 → R40, 500–1000 → R80, 1000+ → R120 */
+/** Tiered advertising fee by item price: 0-300 -> R20, 300-500 -> R40, 500-1000 -> R80, 1000+ -> R120 */
 export function calculateAdvertisingFee(price: number): number {
   if (price < 300) return 20;
   if (price < 500) return 40;

@@ -181,7 +181,7 @@ export function initAuth(onUser: (user: User | null, error?: string) => void): (
         null,
         attempted
           ? `Google signed you in as ${attempted}. Only @${ALLOWED_EMAIL_DOMAIN_DISPLAY} school accounts can use this app.`
-          : 'Only St John\'s College school accounts can use this app. Please sign in with your @stjohnscollege.co.za Google account.'
+          : 'Only school accounts can use this app. Please sign in with your school Google account.'
       );
       return;
     }
@@ -206,7 +206,7 @@ export function initAuth(onUser: (user: User | null, error?: string) => void): (
         null,
         attempted
           ? `Google signed you in as ${attempted}. Only @${ALLOWED_EMAIL_DOMAIN_DISPLAY} school accounts can use this app.`
-          : 'Only St John\'s College school accounts can use this app. Please sign in with your @stjohnscollege.co.za Google account.'
+          : 'Only school accounts can use this app. Please sign in with your school Google account.'
       );
       window.setTimeout(() => {
         void supabase.auth.signOut();

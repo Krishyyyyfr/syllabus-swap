@@ -128,35 +128,40 @@ export default function MessagesTab({ user, initialConversationId, onConversatio
   };
 
   return (
-    <div className="flex flex-col h-full min-h-[60vh]">
+    <div className="flex flex-col h-full min-h-[60vh] rounded-2xl border border-border bg-card shadow-card overflow-hidden animate-fade-up">
       {!activeConvo ? (
         <>
-          <div className="flex items-center gap-2 pb-3 border-b border-border">
+          <div className="flex items-center gap-2 px-4 py-3.5 border-b border-border bg-muted/30">
             <MessageCircle className="w-5 h-5 text-primary" />
             <h2 className="font-display text-lg font-bold text-foreground">Messages</h2>
           </div>
           {loading ? (
-            <p className="text-sm text-muted-foreground py-8">Loading conversations…</p>
+            <p className="text-sm text-muted-foreground py-8 px-4">Loading conversations…</p>
           ) : conversations.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-              <Send className="w-10 h-10 mb-3 opacity-40" />
-              <p className="text-sm font-medium">No messages yet</p>
-              <p className="text-xs mt-1">Message a seller from any listing to start a conversation.</p>
+            <div className="flex flex-col items-center justify-center py-16 text-muted-foreground px-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-muted mb-3">
+                <Send className="w-6 h-6 opacity-50" />
+              </div>
+              <p className="text-sm font-semibold text-foreground">No messages yet</p>
+              <p className="text-xs mt-1 text-center max-w-xs">Message a seller from any listing to start a conversation.</p>
             </div>
           ) : (
-            <div className="divide-y divide-border mt-2">
+            <div className="divide-y divide-border">
               {conversations.map((convo) => (
                 <button
                   key={convo.id}
                   onClick={() => setActiveConvo(convo)}
-                  className="w-full text-left px-4 py-3 hover:bg-muted/50 transition-colors rounded-lg"
+                  className="w-full text-left px-4 py-3.5 hover:bg-muted/50 transition-colors"
                 >
-                  <div className="flex justify-between items-start">
+                  <div className="flex justify-between items-start gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-bold text-primary">
+                      {otherParticipant(convo).slice(0, 2).toUpperCase()}
+                    </div>
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium text-sm text-foreground truncate flex items-center gap-2">
+                      <p className="font-semibold text-sm text-foreground truncate flex items-center gap-2">
                         {otherParticipant(convo)}
                         {hasUnread(convo) && (
-                          <span className="w-2 h-2 rounded-full bg-destructive shrink-0" aria-hidden />
+                          <span className="w-2 h-2 rounded-full bg-secondary shrink-0" aria-hidden />
                         )}
                       </p>
                       <p className="text-xs text-muted-foreground truncate mt-0.5">
@@ -169,7 +174,7 @@ export default function MessagesTab({ user, initialConversationId, onConversatio
                       )}
                     </div>
                     {convo.lastMessageAt && (
-                      <span className="text-[10px] text-muted-foreground/60 ml-2 shrink-0">
+                      <span className="text-[10px] text-muted-foreground/60 shrink-0">
                         {formatDistanceToNow(new Date(convo.lastMessageAt), { addSuffix: true })}
                       </span>
                     )}
@@ -181,16 +186,16 @@ export default function MessagesTab({ user, initialConversationId, onConversatio
         </>
       ) : (
         <>
-          <div className="flex items-center gap-2 pb-3 border-b border-border">
+          <div className="flex items-center gap-2 px-3 py-3 border-b border-border bg-muted/30">
             <button
               onClick={() => setActiveConvo(null)}
-              className="p-1.5 hover:bg-muted rounded-md transition-colors"
+              className="p-1.5 hover:bg-white/80 rounded-full transition-colors"
               aria-label="Back to list"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div className="min-w-0 flex-1">
-              <p className="font-medium text-sm text-foreground truncate">
+              <p className="font-semibold text-sm text-foreground truncate">
                 {otherParticipant(activeConvo)}
               </p>
               <p className="text-[11px] text-muted-foreground truncate">
@@ -265,7 +270,7 @@ export default function MessagesTab({ user, initialConversationId, onConversatio
               onChange={(e) => setNewMsg(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
               placeholder="Type a message..."
-              className="flex-1"
+              className="flex-1 rounded-full"
               disabled={sending}
             />
             <Button size="icon" variant="secondary" onClick={handleSend} disabled={!newMsg.trim() || sending}>
