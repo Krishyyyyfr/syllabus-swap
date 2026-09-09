@@ -153,20 +153,6 @@
       linear-gradient(135deg, #163a62 0%, #1e4a7a 42%, #2d7ab8 100%);
   }
 
-  .hero-cursor-glow {
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    width: 28rem;
-    height: 28rem;
-    border-radius: 9999px;
-    background: radial-gradient(circle, rgba(30, 74, 122, 0.42) 0%, rgba(30, 74, 122, 0.16) 38%, transparent 70%);
-    transform: translate(18%, 20%) translate(-50%, -50%);
-    will-change: transform;
-  }
-
   .shadow-card {
     box-shadow:
       0 1px 2px rgba(30, 74, 122, 0.04),
