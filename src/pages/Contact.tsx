@@ -3,8 +3,8 @@ import { ArrowLeft, Bug, MessageSquare, HelpCircle, Mail } from 'lucide-react';
 import BrandLogo from '@/components/BrandLogo';
 
 const CONTACT_EMAILS = [
-  '27043@stjohnscollege.co.za',
-  '27109@stjohnscollege.co.za',
+  'Krish Vaswani: 27043@stjohnscollege.co.za',
+  'Ginter Shakantu: 27109@stjohnscollege.co.za',
 ] as const;
 
 export default function Contact() {
@@ -48,7 +48,7 @@ export default function Contact() {
         </div>
 
         <section className="space-y-3">
-          <h2 className="font-body text-lg font-bold text-foreground">Email us</h2>
+          <h2 className="font-body text-lg font-bold text-foreground">Email both of us</h2>
           <ul className="space-y-3">
             {CONTACT_EMAILS.map((email) => (
               <li key={email}>
