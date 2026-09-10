@@ -102,7 +102,7 @@ export default function HomeTab({
             </div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-navy px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-white shadow-sm transition-transform duration-300 group-hover:scale-[1.03]">
               <Heart className="h-3 w-3 fill-white/90" />
-              Where your money is going
+              What causes you help?
             </span>
           </div>
 
