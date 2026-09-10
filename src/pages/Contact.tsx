@@ -19,7 +19,7 @@ export default function Contact() {
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <BrandLogo size="lg" />
+          <BrandLogo size="sm" />
         </div>
       </header>
 
