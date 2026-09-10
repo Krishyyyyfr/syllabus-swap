@@ -15,11 +15,11 @@ export default function Contact() {
           <Link
             to="/"
             className="p-1.5 rounded-full hover:bg-muted transition-colors"
-            aria-label="Back to Edumart"
+            aria-label="Back to Edumarts"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <BrandLogo size="sm" />
+          <BrandLogo size="lg" />
         </div>
       </header>
 

@@ -27,7 +27,7 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   other: 'Other',
 };
 
-/** Category chips: solid fills in the Edumart light-blue palette. */
+/** Category chips: solid fills in the Edumarts light-blue palette. */
 export const CATEGORY_TAG_CLASSNAMES: Record<Category, string> = {
   books: 'bg-[#E7F4FC] text-primary border-0 shadow-sm',
   stationery: 'bg-[#DFF1FB] text-secondary border-0 shadow-sm',

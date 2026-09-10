@@ -23,7 +23,7 @@ const NotFound = () => {
           That page doesn&apos;t exist. Head back to the marketplace to keep browsing.
         </p>
         <Button asChild className="mt-6">
-          <Link to="/">Back to Edumart</Link>
+          <Link to="/">Back to Edumarts</Link>
         </Button>
       </div>
     </div>

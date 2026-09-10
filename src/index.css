@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Edumart: sky blue + navy */
+/* Edumarts: sky blue + navy */
 @layer base {
   :root {
     --background: 199 100% 97%;
@@ -146,7 +146,7 @@
     background: linear-gradient(180deg, #f4fbff 0%, #e7f4fc 100%);
   }
 
-  .bg-hero-edumart {
+  .bg-hero-edumarts {
     background:
       radial-gradient(ellipse 70% 80% at 90% 10%, rgba(75, 168, 232, 0.55), transparent 55%),
       radial-gradient(ellipse 50% 60% at 0% 100%, rgba(30, 74, 122, 0.45), transparent 50%),

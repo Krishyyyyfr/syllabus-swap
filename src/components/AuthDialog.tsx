@@ -57,7 +57,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
         </div>
         <DialogHeader className="text-center sm:text-center">
           <DialogTitle className="font-display text-xl">
-            Sign in to Edumart
+            Sign in to Edumarts
           </DialogTitle>
           <DialogDescription>
             Use your school Google account to list items, message sellers, and buy from other students.

@@ -29,7 +29,7 @@ export default function ProfileTab({ user, listings, onSelectListing, onLogout, 
 
   return (
     <div className="space-y-8 animate-fade-up">
-      <div className="relative overflow-hidden rounded-3xl bg-hero-edumart p-6 sm:p-8 text-white shadow-card">
+      <div className="relative overflow-hidden rounded-3xl bg-hero-edumarts p-6 sm:p-8 text-white shadow-card">
         <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-secondary/30 blur-2xl" aria-hidden />
         <div className="relative z-[1] flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">

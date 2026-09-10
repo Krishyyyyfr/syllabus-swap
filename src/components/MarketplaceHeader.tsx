@@ -14,10 +14,10 @@ interface MarketplaceHeaderProps {
 export default function MarketplaceHeader({ searchQuery, onSearchChange, onCreateListing, showAdminLink }: MarketplaceHeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-white/75 backdrop-blur-xl">
-      <div className="max-w-6xl mx-auto px-4 py-3">
+      <div className="max-w-6xl mx-auto px-4 py-3 sm:py-4">
         <div className="flex items-center gap-3 sm:gap-4">
-          <Link to="/" className="min-w-0 shrink-0" aria-label="Edumart home">
-            <BrandLogo size="sm" />
+          <Link to="/" className="shrink-0" aria-label="Edumarts home">
+            <BrandLogo size="lg" />
           </Link>
 
           <div className="flex-1 max-w-md relative">

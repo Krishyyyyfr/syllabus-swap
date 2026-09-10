@@ -5,17 +5,18 @@ interface BrandLogoProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-const wordSize = {
-  sm: 'text-2xl sm:text-3xl',
-  md: 'text-3xl sm:text-4xl',
-  lg: 'text-4xl sm:text-5xl',
+const sizeClass = {
+  sm: 'h-9 sm:h-11',
+  md: 'h-11 sm:h-14',
+  lg: 'h-12 sm:h-16 md:h-20',
 };
 
 export default function BrandLogo({ className, size = 'md' }: BrandLogoProps) {
   return (
-    <span className={cn('inline-flex items-baseline min-w-0 font-extrabold tracking-tight leading-none', wordSize[size], className)}>
-      <span className="text-secondary">Edu</span>
-      <span className="text-navy">mart</span>
-    </span>
+    <img
+      src="/edumarts-logo.png"
+      alt="Edumarts"
+      className={cn('w-auto object-contain object-left', sizeClass[size], className)}
+    />
   );
 }

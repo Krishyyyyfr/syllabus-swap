@@ -107,7 +107,7 @@ export default function HomeTab({
           </div>
 
           <p className="relative mt-3.5 text-sm text-navy/85 leading-relaxed">
-            Listing and advertising fees keep Edumart running. The remaining money goes to Edenvale Hospice, a local charity that cares for people with life-limiting illness and supports their families through some of the hardest days.
+            Listing and advertising fees keep Edumarts running. The remaining money goes to Edenvale Hospice, a local charity that cares for people with life-limiting illness and supports their families through some of the hardest days.
           </p>
 
           <div className="relative mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -116,7 +116,7 @@ export default function HomeTab({
                 <Server className="h-4 w-4" />
               </span>
               <div>
-                <p className="text-xs font-bold text-navy">Keeps Edumart running</p>
+                <p className="text-xs font-bold text-navy">Keeps Edumarts running</p>
                 <p className="text-[11px] text-muted-foreground">Hosting, photos, and chat</p>
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function HomeTab({
         ) : (
           <div className="text-center py-14 rounded-2xl border border-dashed border-border bg-card/60">
             <p className="text-foreground font-semibold">No listings yet</p>
-            <p className="text-muted-foreground text-sm mt-1">Be the first to sell something on Edumart.</p>
+            <p className="text-muted-foreground text-sm mt-1">Be the first to sell something on Edumarts.</p>
             <Button type="button" onClick={onCreateListing} className="mt-4">
               <Plus className="w-4 h-4" />
               Sell an item
