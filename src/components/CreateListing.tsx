@@ -290,13 +290,13 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
                   https://my.karri.global/qr/nddkn4b/c-g8pkvm5
                 </a>
                 {'. '}
-                After we receive your payment, your listing and payment will be reviewed within 1-3 business days. Once approved, your item will appear on the marketplace.
+                After we receive your payment, your listing and payment will be reviewed within 1-3 business days. Once approved, your item will appear advertised on the marketplace.
               </DialogDescription>
             </DialogHeader>
 
             <div className="rounded-2xl border border-border bg-muted/30 p-4 space-y-4">
               <div>
-                <h4 className="font-bold text-sm text-foreground mb-1">Pay by QR code</h4>
+                <h4 className="font-bold text-sm text-foreground mb-1">Pay using QR code</h4>
                 <p className="text-xs text-muted-foreground mb-3">
                   Amount due: <span className="font-semibold text-foreground">R{advertisingFee.toFixed(2)}</span>
                   {' '}(flat fee by item price tier)
