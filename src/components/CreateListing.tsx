@@ -280,7 +280,17 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
             <DialogHeader className="text-left space-y-2">
               <DialogTitle className="font-display text-xl">Complete payment</DialogTitle>
               <DialogDescription className="text-sm text-left leading-relaxed">
-                Scan the QR code below and pay the advertising fee. After we receive your payment, your listing and payment will be reviewed within 3 business days. Once approved, your item will appear on the marketplace.
+                Scan the QR code below and pay the advertising fee. Or click this link:{' '}
+                <a
+                  href="https://my.karri.global/qr/nddkn4b/c-g8pkvm5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline break-all"
+                >
+                  https://my.karri.global/qr/nddkn4b/c-g8pkvm5
+                </a>
+                {'. '}
+                After we receive your payment, your listing and payment will be reviewed within 1-3 business days. Once approved, your item will appear on the marketplace.
               </DialogDescription>
             </DialogHeader>
 
