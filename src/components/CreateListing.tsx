@@ -296,7 +296,7 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
 
             <div className="rounded-2xl border border-border bg-muted/30 p-4 space-y-4">
               <div>
-                <h4 className="font-bold text-sm text-foreground mb-1">Pay by QR code</h4>
+                <h4 className="font-bold text-sm text-foreground mb-1">Pay using QR code</h4>
                 <p className="text-xs text-muted-foreground mb-3">
                   Amount due: <span className="font-semibold text-foreground">R{advertisingFee.toFixed(2)}</span>
                   {' '}(flat fee by item price tier)
