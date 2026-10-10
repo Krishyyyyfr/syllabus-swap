@@ -76,7 +76,7 @@ export default function CreateListing({ open, onClose, onCreated, user }: Create
 
   const validate = (): boolean => {
     const errs: Record<string, string> = {};
-    if (!title.trim()) errs.title = 'Title is required';
+    if (!title.trim()) errs.title = 'A title is required';
     if (imageUrls.length === 0) errs.photos = 'You need at least 1 photo attached to continue.';
     if (title.length > 100) errs.title = 'Title must be under 100 characters';
     if (!description.trim()) errs.description = 'Description is required';
