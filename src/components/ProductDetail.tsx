@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { VerifiedBadge } from '@/components/VerifiedBadge';
 import { MessageCircle, ArrowLeft, User, Clock, ChevronLeft, ChevronRight, Trash2, ImageOff } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { deleteListing } from '@/lib/store';
@@ -143,13 +142,11 @@ export default function ProductDetail({ listing, open, onClose, onMessageSeller,
               </>
             ) : (
               <>
-                <div className="rounded-2xl border border-border bg-muted/40 p-4 space-y-2">
+                <div className="rounded-2xl border border-border bg-muted/40 p-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
                     <User className="w-4 h-4 text-primary" />
-                    Seller
+                    Verified student
                   </h4>
-                  <p className="text-sm font-semibold text-foreground">{listing.sellerName}</p>
-                  <VerifiedBadge />
                 </div>
                 <Button
                   variant="secondary"
